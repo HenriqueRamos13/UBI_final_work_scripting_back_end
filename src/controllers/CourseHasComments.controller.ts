@@ -1,46 +1,15 @@
 import { Request, Response } from "express";
+import CourseHasCommentsService from "../services/CourseHasComments.service";
 import { routeConfig } from "../utils/decorators/Route.decorator";
 import METHOD from "../utils/enums/methods.enum";
 
 class CourseHasCommentsController {
   @routeConfig({
-    method: METHOD.POST,
-    path: "/auth",
+    method: METHOD.GET,
+    path: "/course/:id/comments",
   })
-  public post(req: Request, res: Response, next): void {
-    res.json({
-      message: "POST",
-    });
-  }
-
-  @routeConfig({
-    method: METHOD.PUT,
-    path: "/auth",
-  })
-  public put(req: Request, res: Response): void {
-    res.json({
-      message: "PUT",
-    });
-  }
-
-  @routeConfig({
-    method: METHOD.PATCH,
-    path: "/auth",
-  })
-  public patch(req: Request, res: Response): void {
-    res.json({
-      message: "PATCH",
-    });
-  }
-
-  @routeConfig({
-    method: METHOD.DELETE,
-    path: "/auth",
-  })
-  public delete(req: Request, res: Response): void {
-    res.json({
-      message: "DELETE",
-    });
+  public getAll(req: Request, res: Response, next): void {
+    CourseHasCommentsService.findAll(req, res, next);
   }
 }
 

@@ -14,6 +14,11 @@ import "dotenv/config";
 import AuthController from "../controllers/Auth.controller";
 import SessionController from "../controllers/Session.controller";
 import { route } from "../utils/decorators/Route.decorator";
+import CommentController from "../controllers/Comment.controller";
+import CourseController from "../controllers/Course.controller";
+import CourseHasCommentsController from "../controllers/CourseHasComments.controller";
+import CourseHasUsersController from "../controllers/CourseHasUsers.controller";
+import UserController from "../controllers/User.controller";
 
 class App {
   public app: express.Application;
@@ -41,6 +46,11 @@ class App {
 
     new AuthController();
     new SessionController();
+    new CommentController();
+    new CourseController();
+    new CourseHasCommentsController();
+    new CourseHasUsersController();
+    new UserController();
     this.app.use(route);
   }
 

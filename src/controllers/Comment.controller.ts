@@ -1,46 +1,27 @@
 import { Request, Response } from "express";
+import CommentService from "../services/Comment.service";
+import { Roles } from "../utils/decorators/Roles.decorator";
 import { routeConfig } from "../utils/decorators/Route.decorator";
 import METHOD from "../utils/enums/methods.enum";
+import { Role } from "../utils/enums/Roles.enum";
 
 class CommentController {
   @routeConfig({
     method: METHOD.POST,
-    path: "/auth",
+    path: "/comment/course/:id",
   })
-  public post(req: Request, res: Response, next): void {
-    res.json({
-      message: "POST",
-    });
+  @Roles(Role.USER, Role.TEACHER)
+  public async postCourse(req: Request, res: Response, next): Promise<any> {
+    await CommentService.postCourse(req, res, next);
   }
 
   @routeConfig({
-    method: METHOD.PUT,
-    path: "/auth",
+    method: METHOD.POST,
+    path: "/comment/response/:id",
   })
-  public put(req: Request, res: Response): void {
-    res.json({
-      message: "PUT",
-    });
-  }
-
-  @routeConfig({
-    method: METHOD.PATCH,
-    path: "/auth",
-  })
-  public patch(req: Request, res: Response): void {
-    res.json({
-      message: "PATCH",
-    });
-  }
-
-  @routeConfig({
-    method: METHOD.DELETE,
-    path: "/auth",
-  })
-  public delete(req: Request, res: Response): void {
-    res.json({
-      message: "DELETE",
-    });
+  @Roles(Role.USER, Role.TEACHER)
+  public async postResponse(req: Request, res: Response, next): Promise<any> {
+    await CommentService.postResponse(req, res, next);
   }
 }
 

@@ -1,10 +1,15 @@
 import CourseModel, { ICourse } from "../models/Courses/Course.model";
-import { IUser } from "../models/User/User.model";
+
+export interface IUpdateCourse {
+  _id: string;
+  name?: string;
+  description?: string;
+}
 
 export interface ICreateCourse {
   name: string;
   description: string;
-  teacher: IUser;
+  teacher: ICourse;
 }
 
 export interface IFindCourse {
@@ -39,6 +44,36 @@ class CourseMongoRepository {
     });
 
     if (!course._id) throw new Error("Course not found");
+
+    return course;
+  }
+
+  public async findAll(): Promise<ICourse[]> {
+    const courses = await this.model.find();
+
+    if (!courses) throw new Error("Courses not found");
+
+    return courses;
+  }
+
+  public async update(data: IUpdateCourse): Promise<ICourse> {
+    const { description, name, _id } = data;
+
+    const course = await this.model
+      .findByIdAndUpdate(_id, {
+        ...(description && { description }),
+        ...(name && { name }),
+      })
+      .lean()
+      .exec();
+
+    if (!course._id) throw new Error("Course not updated");
+
+    return course;
+  }
+
+  public async delete(id: string): Promise<ICourse> {
+    const course = await this.model.findByIdAndDelete(id).lean().exec();
 
     return course;
   }

@@ -33,9 +33,6 @@ passport.use(
         email,
       });
 
-      if (!(await user.compareHash(password)))
-        return done(null, false, { message: "Wrong Password" });
-
       if (!bcrypt.compareSync(password, user.password))
         return done(TEXTS.error.WRONG_PASSWORD, false, {
           message: TEXTS.error.WRONG_PASSWORD,

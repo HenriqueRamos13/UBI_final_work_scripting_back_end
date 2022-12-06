@@ -29,16 +29,60 @@ class CourseHasCommentsMongoRepository {
     return result;
   }
 
-  public async findOne(
-    data: IFindCourseHasComments
-  ): Promise<ICourseHasComments> {
-    const result = await this.model.findOne({
-      ...data,
-    });
+  public async findAll(data: IFindCourseHasComments): Promise<any[]> {
+    const result = await this.model
+      .find({
+        course: data._id,
+      })
+      .populate({
+        path: "comment",
+        populate: {
+          path: "user",
+          select: {
+            password: 0,
+          },
+        },
+      })
+      .populate({
+        path: "responses",
+        populate: {
+          path: "user",
+          select: {
+            password: 0,
+          },
+        },
+      })
+      .populate("course")
+      .lean()
+      .exec();
 
-    if (!result._id) throw new Error("CourseHasComment not found");
+    if (!result) throw new Error("CourseHasComment not found");
 
     return result;
+  }
+
+  public async addResponse({
+    comment,
+    response,
+  }: {
+    comment: string;
+    response: string;
+  }): Promise<IComment> {
+    const updatedComment = await this.model.findOneAndUpdate(
+      {
+        comment: comment,
+      },
+      {
+        $push: {
+          responses: response,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    return updatedComment;
   }
 }
 

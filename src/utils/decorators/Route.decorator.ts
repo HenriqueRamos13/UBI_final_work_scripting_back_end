@@ -1,5 +1,4 @@
 import { Request, Response, Router } from "express";
-import App from "../../config/App";
 import METHOD from "../enums/methods.enum";
 
 interface RouteConfigProps {
@@ -18,10 +17,12 @@ function routeConfig({ method, path }: RouteConfigProps): MethodDecorator {
     const response = async (req: Request, res: Response) => {
       try {
         const original = await descriptor.value(req, res);
+        return original;
         res.status(200).json(original);
-      } catch (error: any) {
-        res.status(error.status ?? 500).json({
-          message: error.message ?? "Internal server error",
+      } catch (e: any) {
+        res.status(500).json({
+          message: "Internal server error",
+          error: e.message ?? "Internal server error",
         });
       }
     };

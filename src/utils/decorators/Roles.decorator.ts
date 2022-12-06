@@ -14,7 +14,7 @@ export function Roles(...roles: Role[]) {
 
       const { role: userRole }: { role: Role } = request.user;
 
-      if (userRole.length === 0 || !roles.includes(userRole))
+      if (!userRole || userRole.length === 0 || !roles.includes(userRole))
         return ErrorHandler.Unauthorized(
           "User not authorized to access this resource - Roles Decorator",
           "Você não tem permissão suficiente para acessar este recurso.",

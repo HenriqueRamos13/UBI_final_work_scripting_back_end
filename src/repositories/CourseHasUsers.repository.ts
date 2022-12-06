@@ -1,4 +1,3 @@
-import CommentsModel from "../models/Comments/Comments.model";
 import CourseHasUsersModel, {
   ICourseHasUsers,
 } from "../models/CourseHasUsers/CourseHasUsers.model";
@@ -22,17 +21,21 @@ class CourseHasUsersMongoRepository {
       ...data,
     });
 
-    if (!result._id) throw new Error("CourseHasUsers not created");
+    if (!result._id) throw new Error("CourseHasUser not created");
 
     return result;
   }
 
-  public async findOne(data: IFindCourseHasUsers): Promise<ICourseHasUsers> {
-    const result = await this.model.findOne({
-      ...data,
-    });
+  public async findAll(data: IFindCourseHasUsers): Promise<any[]> {
+    const result = await this.model
+      .find({
+        course: data._id,
+      })
+      .populate("user")
+      .lean()
+      .exec();
 
-    if (!result._id) throw new Error("CourseHasUsers not found");
+    if (!result) throw new Error("CourseHasUsers not found");
 
     return result;
   }

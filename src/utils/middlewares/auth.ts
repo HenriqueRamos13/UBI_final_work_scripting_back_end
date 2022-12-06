@@ -7,17 +7,18 @@ export const AuthMiddleware = (req, res, next) => {
     // return res.status(401).json({
     //   message: "Token não encontrado",
     // });
+    req.user = {};
     req.noToken = true;
-    return next();
-  }
-
-  return jwt.verify(token, process.env.JWT_TOKEN, (err, decoded) => {
-    if (err)
-      return res.status(401).json({
-        message: "Token inválido",
-      });
-
-    req.user = decoded;
     next();
-  });
+  } else {
+    return jwt.verify(token, process.env.JWT_TOKEN, (err, decoded) => {
+      if (err)
+        return res.status(401).json({
+          message: "Token inválido",
+        });
+
+      req.user = decoded;
+      next();
+    });
+  }
 };
