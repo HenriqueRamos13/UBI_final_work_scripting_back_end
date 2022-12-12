@@ -22,7 +22,10 @@ import UserController from "../controllers/User.controller";
 
 class App {
   public app: express.Application;
-  private corsWhitelist: string[] = ["http://127.0.0.1"];
+  private corsWhitelist: string[] = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+  ];
 
   constructor() {
     console.log("Starting server...");
@@ -59,7 +62,7 @@ class App {
 
     this.app.use(
       cors({
-        origin: this.corsWhitelist,
+        origin: this.corsWhitelist || "*",
         credentials: true,
         allowedHeaders: "Content-Type, Accept, Origin, Timestamp",
         preflightContinue: false,

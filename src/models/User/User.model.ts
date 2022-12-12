@@ -10,7 +10,7 @@ export interface IUser {
   _id: string;
   email: string;
   password: string;
-  roles: Role[];
+  role: Role;
   compareHash(hash: string): Promise<boolean>;
   createdAt: Date;
   updatedAt: Date;

@@ -20,14 +20,20 @@ class PassportController {
           algorithm: "HS256",
         });
 
-        res.cookie("authorization", token, {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60,
-          sameSite: "lax",
-          secure: process.env.NODE_ENV === "production",
-        });
-
-        return res.json({ token });
+        res
+          .cookie("authorization", token, {
+            httpOnly: false,
+            maxAge: 1000 * 60 * 60,
+            // sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+          })
+          .json({
+            token,
+            user: {
+              email: user.email,
+              role: user.role,
+            },
+          });
       });
     })(req, res, next);
   }
@@ -37,8 +43,12 @@ class PassportController {
       "signup",
       { session: false },
       async (err, user, info) => {
-        if (err || !user)
-          return ErrorHandler.Unauthorized(err, TEXTS.error.SIGNUP_FAIL, res);
+        if (err || !user) {
+          return res.json({
+            error: "Não foi possível criar o usuário.",
+          });
+          // return ErrorHandler.Unauthorized(err, TEXTS.error.SIGNUP_FAIL, res);
+        }
 
         res.json({
           message: TEXTS.success.USER_CREATED,
