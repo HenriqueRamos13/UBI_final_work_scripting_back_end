@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CourseMongo } from "../repositories/Course.repository";
 import { CourseHasUsersMongo } from "../repositories/CourseHasUsers.repository";
 import { UserMongo } from "../repositories/User.repository";
+import { Role } from "../utils/enums/Roles.enum";
 
 class CourseHasUsersService {
   public async create(req: Request, res: Response, next): Promise<any> {
@@ -9,7 +10,7 @@ class CourseHasUsersService {
     const { id } = req.params;
 
     const userData = await UserMongo.findOne({
-      _id: (user as any).id,
+      _id: (user as any)._id,
     });
 
     const courseData = await CourseMongo.findOne({
@@ -37,8 +38,30 @@ class CourseHasUsersService {
   public async findAll(req: Request, res: Response, next): Promise<any> {
     const { id } = req.params;
 
-    CourseHasUsersMongo.findAll({
+    const data = await CourseHasUsersMongo.findAll({
       _id: id,
+    });
+
+    res.status(200).json({
+      message: "All users from course",
+      data,
+    });
+  }
+
+  public async findAllUserCourses(
+    req: Request,
+    res: Response,
+    next
+  ): Promise<any> {
+    const { user } = req;
+
+    const data = await CourseHasUsersMongo.findUserCourses({
+      _id: (user as any)?._id,
+    });
+
+    res.status(200).json({
+      message: "All courses from user",
+      data,
     });
   }
 }

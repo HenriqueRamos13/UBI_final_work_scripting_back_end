@@ -8,8 +8,8 @@ class CourseHasCommentsController {
     method: METHOD.GET,
     path: "/course/:id/comments",
   })
-  public getAll(req: Request, res: Response, next): void {
-    CourseHasCommentsService.findAll(req, res, next);
+  public async getAll(req: Request, res: Response, next): Promise<any> {
+    await CourseHasCommentsService.findAll(req, res, next);
   }
 }
 

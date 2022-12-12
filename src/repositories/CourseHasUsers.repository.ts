@@ -13,6 +13,10 @@ export interface IFindCourseHasUsers {
   _id?: string;
 }
 
+interface IFindUserCourses {
+  _id?: string;
+}
+
 class CourseHasUsersMongoRepository {
   model = CourseHasUsersModel;
 
@@ -26,12 +30,29 @@ class CourseHasUsersMongoRepository {
     return result;
   }
 
+  public async findUserCourses(data: IFindUserCourses): Promise<any> {
+    const result = await this.model
+      .find({
+        user: data._id,
+      })
+      .populate("course")
+      .lean()
+      .exec();
+
+    if (!result) throw new Error("User courses not found");
+
+    return result;
+  }
+
   public async findAll(data: IFindCourseHasUsers): Promise<any[]> {
     const result = await this.model
       .find({
         course: data._id,
       })
-      .populate("user")
+      .populate({
+        path: "user",
+        select: "_id email",
+      })
       .lean()
       .exec();
 

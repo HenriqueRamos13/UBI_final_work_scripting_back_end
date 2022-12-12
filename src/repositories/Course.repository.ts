@@ -1,4 +1,5 @@
 import CourseModel, { ICourse } from "../models/Courses/Course.model";
+import { Role } from "../utils/enums/Roles.enum";
 
 export interface IUpdateCourse {
   _id: string;
@@ -54,8 +55,12 @@ class CourseMongoRepository {
     return course;
   }
 
-  public async findAll(): Promise<ICourse[]> {
-    const courses = await this.model.find();
+  public async findAll(
+    user: { role: Role; _id: string } | null = null
+  ): Promise<ICourse[]> {
+    const courses = await this.model.find({
+      ...(user.role === Role.TEACHER ? { teacher: user._id } : {}),
+    });
 
     if (!courses) throw new Error("Courses not found");
 

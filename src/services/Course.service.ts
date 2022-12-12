@@ -31,8 +31,6 @@ class CourseService {
 
     const { id } = req.params;
 
-    console.log(id, title, text);
-
     CourseMongo.createTopic({
       _id: id,
       title,
@@ -53,11 +51,9 @@ class CourseService {
   }
 
   public async findOne(req: Request, res: Response, next): Promise<any> {
-    const { email } = req.body;
     const { id } = req.params;
 
     CourseMongo.findOne({
-      ...(email && { email }),
       ...(id && { _id: id }),
     })
       .then((course) => {
@@ -75,7 +71,9 @@ class CourseService {
   }
 
   public async findAll(req: Request, res: Response, next): Promise<any> {
-    CourseMongo.findAll()
+    const { user } = req;
+
+    CourseMongo.findAll(user as any)
       .then((courses) => {
         res.json({
           message: "Courses found successfully",
