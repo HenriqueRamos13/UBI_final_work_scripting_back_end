@@ -35,6 +35,15 @@ class CourseController {
   }
 
   @routeConfig({
+    method: METHOD.POST,
+    path: "/course/:id/topic",
+  })
+  @Roles(Role.TEACHER)
+  public async postTopic(req: Request, res: Response, next): Promise<any> {
+    await CourseService.createTopic(req, res, next);
+  }
+
+  @routeConfig({
     method: METHOD.PUT,
     path: "/course/:id",
   })

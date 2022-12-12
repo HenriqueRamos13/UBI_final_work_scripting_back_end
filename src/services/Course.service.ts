@@ -26,6 +26,32 @@ class CourseService {
       });
   }
 
+  public async createTopic(req: Request, res: Response, next): Promise<any> {
+    const { title, text } = req.body;
+
+    const { id } = req.params;
+
+    console.log(id, title, text);
+
+    CourseMongo.createTopic({
+      _id: id,
+      title,
+      text,
+    })
+      .then((course) => {
+        res.json({
+          message: "Topic created successfully",
+          data: course,
+        });
+      })
+      .catch((err) => {
+        res.json({
+          message: "Error creating topic",
+          error: err.message,
+        });
+      });
+  }
+
   public async findOne(req: Request, res: Response, next): Promise<any> {
     const { email } = req.body;
     const { id } = req.params;

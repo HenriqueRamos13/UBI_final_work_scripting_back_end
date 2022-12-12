@@ -6,6 +6,12 @@ export interface IUpdateCourse {
   description?: string;
 }
 
+export interface ICreateTopic {
+  _id: string;
+  title: string;
+  text: string;
+}
+
 export interface ICreateCourse {
   name: string;
   description: string;
@@ -74,6 +80,26 @@ class CourseMongoRepository {
 
   public async delete(id: string): Promise<ICourse> {
     const course = await this.model.findByIdAndDelete(id).lean().exec();
+
+    return course;
+  }
+
+  public async createTopic(data: ICreateTopic): Promise<ICourse> {
+    const { _id, text, title } = data;
+
+    const course = await this.model
+      .findByIdAndUpdate(_id, {
+        $push: {
+          topics: {
+            text,
+            title,
+          },
+        },
+      })
+      .lean()
+      .exec();
+
+    if (!course._id) throw new Error("Topic not created");
 
     return course;
   }
