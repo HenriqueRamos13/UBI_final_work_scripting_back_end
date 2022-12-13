@@ -26,9 +26,18 @@ class CourseHasUsersController {
 
   @routeConfig({
     method: METHOD.GET,
-    path: "/course/all/user/subscribed",
+    path: "/course/all/user/all",
   })
-  @Roles(Role.USER)
+  @Roles(Role.ADMIN, Role.TEACHER)
+  public async getAllFromAll(req: Request, res: Response, next): Promise<any> {
+    await CourseHasUsersService.findAllFromAll(req, res, next);
+  }
+
+  @routeConfig({
+    method: METHOD.GET,
+    path: "/course/all/user/subscribed/:id?",
+  })
+  @Roles(Role.USER, Role.ADMIN)
   public async getAllUserCourse(
     req: Request,
     res: Response,

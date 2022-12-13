@@ -60,6 +60,14 @@ class CourseHasUsersMongoRepository {
 
     return result;
   }
+
+  public async findAllFromAll(): Promise<any[]> {
+    const result = await this.model.find().lean().exec();
+
+    if (!result) throw new Error("CourseHasUsers not found");
+
+    return result;
+  }
 }
 
 export const CourseHasUsersMongo = new CourseHasUsersMongoRepository();

@@ -65,7 +65,7 @@ class CourseController {
     method: METHOD.DELETE,
     path: "/course/:id",
   })
-  @Roles(Role.ADMIN, Role.TEACHER)
+  @Roles(Role.TEACHER)
   public delete(req: Request, res: Response, next): void {
     CourseService.delete(req, res, next);
   }

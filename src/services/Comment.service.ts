@@ -35,7 +35,7 @@ class CommentService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error creating comment",
           error: err.message,
         });
@@ -69,7 +69,7 @@ class CommentService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error creating comment",
           error: err.message,
         });

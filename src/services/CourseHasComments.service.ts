@@ -34,7 +34,7 @@ class CourseHasCommentsService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error finding CourseHasComments",
           error: err,
         });

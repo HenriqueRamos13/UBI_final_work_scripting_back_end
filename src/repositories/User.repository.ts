@@ -51,8 +51,13 @@ class UserMongoRepository {
     return user;
   }
 
-  public async findAll(): Promise<any[]> {
-    const users = await this.model.find().lean().exec();
+  public async findAll({ type }: { type?: Role | null }): Promise<any[]> {
+    const users = await this.model
+      .find({
+        ...(type && { role: type }),
+      })
+      .lean()
+      .exec();
 
     if (!users) throw new Error("Users not found");
 

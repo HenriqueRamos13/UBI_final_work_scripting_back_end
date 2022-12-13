@@ -48,6 +48,15 @@ class CourseHasUsersService {
     });
   }
 
+  public async findAllFromAll(req: Request, res: Response, next): Promise<any> {
+    const data = await CourseHasUsersMongo.findAllFromAll();
+
+    res.status(200).json({
+      message: "All users and course",
+      data,
+    });
+  }
+
   public async findAllUserCourses(
     req: Request,
     res: Response,
@@ -55,8 +64,10 @@ class CourseHasUsersService {
   ): Promise<any> {
     const { user } = req;
 
+    const { id } = req.params;
+
     const data = await CourseHasUsersMongo.findUserCourses({
-      _id: (user as any)?._id,
+      _id: (user as any).role === Role.USER ? (user as any)?._id : id,
     });
 
     res.status(200).json({

@@ -19,7 +19,7 @@ class UserService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error creating user",
           error: err.message,
         });
@@ -43,7 +43,7 @@ class UserService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error finding user",
           error: err.message,
         });
@@ -51,7 +51,9 @@ class UserService {
   }
 
   public async findAll(req: Request, res: Response, next): Promise<any> {
-    UserMongo.findAll()
+    const { type } = req.query;
+
+    UserMongo.findAll({ type: type as any })
       .then((users) => {
         const usersWithoutPassword = users.map((user) => {
           const { password, ...userWithoutPassword } = user;
@@ -65,7 +67,7 @@ class UserService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error finding users",
           error: err.message,
         });
@@ -89,7 +91,7 @@ class UserService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error updating user",
           error: err.message,
         });
@@ -114,7 +116,7 @@ class UserService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error updating user",
           error: err.message,
         });
@@ -134,7 +136,7 @@ class UserService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error deleting user",
           error: err.message,
         });

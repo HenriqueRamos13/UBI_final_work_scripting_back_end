@@ -19,7 +19,7 @@ class CourseService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error creating course",
           error: err.message,
         });
@@ -43,7 +43,7 @@ class CourseService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error creating topic",
           error: err.message,
         });
@@ -63,7 +63,7 @@ class CourseService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error finding course",
           error: err.message,
         });
@@ -81,7 +81,7 @@ class CourseService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error finding ucourse",
           error: err.message,
         });
@@ -104,7 +104,7 @@ class CourseService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error updating course",
           error: err.message,
         });
@@ -127,7 +127,7 @@ class CourseService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error updating course",
           error: err.message,
         });
@@ -145,7 +145,7 @@ class CourseService {
         });
       })
       .catch((err) => {
-        res.json({
+        res.status(401).json({
           message: "Error deleting course",
           error: err.message,
         });
